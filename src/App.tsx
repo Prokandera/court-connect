@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import BookingPage from "./pages/BookingPage";
 import BookingsPage from "./pages/BookingsPage";
 import AuthPage from "./pages/AuthPage";
+import ProfilePage from "./pages/ProfilePage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminCourts from "./pages/admin/AdminCourts";
 import AdminEquipment from "./pages/admin/AdminEquipment";
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/book" element={<BookingPage />} />
             <Route path="/bookings" element={<BookingsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
             <Route path="/auth" element={<AuthPage />} />
           </Route>
           <Route path="/admin" element={<AdminLayout />}>
