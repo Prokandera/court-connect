@@ -13,6 +13,10 @@ export default {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['Outfit', 'system-ui', 'sans-serif'],
+        display: ['Space Grotesk', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
@@ -57,6 +61,20 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        sport: {
+          green: "hsl(var(--sport-green))",
+          "green-light": "hsl(var(--sport-green-light))",
+          "green-dark": "hsl(var(--sport-green-dark))",
+          orange: "hsl(var(--sport-orange))",
+          "orange-light": "hsl(var(--sport-orange-light))",
+          "orange-dark": "hsl(var(--sport-orange-dark))",
+          yellow: "hsl(var(--sport-yellow))",
+        },
+        court: {
+          indoor: "hsl(var(--court-indoor))",
+          outdoor: "hsl(var(--court-outdoor))",
+        },
+        unavailable: "hsl(var(--unavailable))",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -65,25 +83,27 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "slide-in-from-right": {
+          from: { transform: "translateX(100%)" },
+          to: { transform: "translateX(0)" },
+        },
+        "slide-out-to-right": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(100%)" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "slide-in-right": "slide-in-from-right 0.3s ease-out",
+        "slide-out-right": "slide-out-to-right 0.3s ease-out",
       },
     },
   },
