@@ -1,5 +1,6 @@
 import { create } from 'zustand';
-import { Court, TimeSlot, Equipment, Coach, BookingEquipment, PriceBreakdownItem } from '@/types';
+import { persist } from 'zustand/middleware';
+import { Court, TimeSlot, Equipment, Coach, BookingEquipment, PriceBreakdownItem, Booking } from '@/types';
 import { mockPricingRules } from '@/data/mockData';
 
 interface BookingStore {
@@ -13,6 +14,9 @@ interface BookingStore {
   selectedEquipment: BookingEquipment[];
   selectedCoach: Coach | null;
   
+  // User bookings
+  userBookings: Booking[];
+  
   // Actions
   setStep: (step: number) => void;
   nextStep: () => void;
@@ -25,6 +29,7 @@ interface BookingStore {
   updateEquipmentQuantity: (equipmentId: string, quantity: number) => void;
   setCoach: (coach: Coach | null) => void;
   resetBooking: () => void;
+  confirmBooking: () => void;
   
   // Computed
   calculatePrice: () => { total: number; breakdown: PriceBreakdownItem[] };
@@ -39,9 +44,11 @@ const initialState = {
   selectedCoach: null,
 };
 
-export const useBookingStore = create<BookingStore>((set, get) => ({
-  ...initialState,
-  
+export const useBookingStore = create<BookingStore>()(
+  persist(
+    (set, get) => ({
+      ...initialState,
+      userBookings: [],
   setStep: (step) => set({ currentStep: step }),
   
   nextStep: () => set((state) => ({ 
@@ -106,6 +113,32 @@ export const useBookingStore = create<BookingStore>((set, get) => ({
   setCoach: (coach) => set({ selectedCoach: coach }),
   
   resetBooking: () => set(initialState),
+  
+  confirmBooking: () => {
+    const state = get();
+    if (!state.selectedCourt || !state.selectedDate || !state.selectedTimeSlot) return;
+    
+    const { total, breakdown } = state.calculatePrice();
+    
+    const newBooking: Booking = {
+      id: `booking-${Date.now()}`,
+      date: state.selectedDate.toISOString(),
+      timeSlot: state.selectedTimeSlot,
+      court: state.selectedCourt,
+      equipment: state.selectedEquipment,
+      coach: state.selectedCoach || undefined,
+      totalPrice: total,
+      priceBreakdown: breakdown,
+      status: 'confirmed',
+      userId: 'current-user',
+      createdAt: new Date().toISOString(),
+    };
+    
+    set((s) => ({
+      ...initialState,
+      userBookings: [...s.userBookings, newBooking],
+    }));
+  },
   
   calculatePrice: () => {
     const state = get();
@@ -182,4 +215,10 @@ export const useBookingStore = create<BookingStore>((set, get) => ({
     
     return { total, breakdown };
   },
-}));
+    }),
+    {
+      name: 'booking-storage',
+      partialize: (state) => ({ userBookings: state.userBookings }),
+    }
+  )
+);
