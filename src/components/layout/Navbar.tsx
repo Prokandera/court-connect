@@ -49,9 +49,13 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center gap-3">
             {isAuthenticated ? (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-muted-foreground">
-                  Hi, {user?.name}
-                </span>
+                <Link 
+                  to="/profile" 
+                  className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
+                >
+                  <User className="w-4 h-4" />
+                  {user?.name}
+                </Link>
                 <Button variant="outline" size="sm" onClick={logout}>
                   <LogOut className="w-4 h-4 mr-2" />
                   Logout
@@ -99,10 +103,14 @@ export const Navbar = () => {
               <div className="border-t pt-4 mt-2">
                 {isAuthenticated ? (
                   <div className="space-y-3">
-                    <div className="flex items-center gap-2">
+                    <Link 
+                      to="/profile" 
+                      onClick={() => setIsOpen(false)}
+                      className="flex items-center gap-2 hover:text-primary transition-colors"
+                    >
                       <User className="w-4 h-4" />
                       <span>{user?.name}</span>
-                    </div>
+                    </Link>
                     <Button variant="outline" className="w-full" onClick={logout}>
                       <LogOut className="w-4 h-4 mr-2" />
                       Logout

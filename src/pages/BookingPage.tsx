@@ -27,10 +27,19 @@ const BookingPage = () => {
     selectedDate, setDate,
     selectedTimeSlot, setTimeSlot,
     selectedCourt, setCourt,
-    selectedEquipment, updateEquipmentQuantity,
+    selectedEquipment, addEquipment, updateEquipmentQuantity,
     selectedCoach, setCoach,
     calculatePrice, resetBooking,
   } = useBookingStore();
+
+  const handleEquipmentQuantityChange = (equipment: typeof mockEquipment[0], newQuantity: number) => {
+    const existing = selectedEquipment.find(e => e.equipment.id === equipment.id);
+    if (!existing && newQuantity > 0) {
+      addEquipment(equipment, newQuantity);
+    } else {
+      updateEquipmentQuantity(equipment.id, newQuantity);
+    }
+  };
 
   const { total, breakdown } = calculatePrice();
   const timeSlots = selectedDate ? generateTimeSlots(selectedDate) : [];
@@ -98,7 +107,7 @@ const BookingPage = () => {
                     key={eq.id} 
                     equipment={eq} 
                     selectedQuantity={selectedEquipment.find(e => e.equipment.id === eq.id)?.quantity || 0}
-                    onQuantityChange={(qty) => updateEquipmentQuantity(eq.id, qty)}
+                    onQuantityChange={(qty) => handleEquipmentQuantityChange(eq, qty)}
                   />
                 ))}
               </div>
