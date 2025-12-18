@@ -29,7 +29,7 @@ const BookingPage = () => {
     selectedCourt, setCourt,
     selectedEquipment, addEquipment, updateEquipmentQuantity,
     selectedCoach, setCoach,
-    calculatePrice, resetBooking,
+    calculatePrice, confirmBooking,
   } = useBookingStore();
 
   const handleEquipmentQuantityChange = (equipment: typeof mockEquipment[0], newQuantity: number) => {
@@ -55,8 +55,8 @@ const BookingPage = () => {
   };
 
   const handleConfirm = () => {
+    confirmBooking();
     toast({ title: "Booking Confirmed!", description: "Your booking has been successfully created." });
-    resetBooking();
   };
 
   const isCoachAvailable = (coach: typeof mockCoaches[0]) => {
